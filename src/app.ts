@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import cors from "cors";
 import { router } from "./routes/index.routes";
+import path from "path";
 
 class App {
 	private server: Express;
@@ -10,11 +11,14 @@ class App {
 		this.server = express();
 		this.port = pPort;
 		this.server.use(cors());
-		//this.middlewares();
+		this.middlewares();
 		this.server.use(router);
 	}
 
-	middlewares() {}
+	middlewares() {
+		this.server.set("views", path.join(__dirname, "views"));
+		this.server.set("view engine", "ejs");
+	}
 
 	listen(callback: () => void): void {
 		this.server.listen(this.port, callback);
